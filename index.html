@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z.S — Digital Craftsman &amp; Aesthete</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a96e"},fontFamily:{playfair:["Playfair Display","SimSun","STSong","Songti SC","serif"],grotesk:["Space Grotesk","PingFang SC","Microsoft YaHei","sans-serif"]}}}}
+</script>
+</head>
+<body class="bg-deep text-warm font-grotesk antialiased">
+<div id="cursor-dot" aria-hidden="true"></div>
+<canvas id="three-canvas"></canvas>
+
+<header class="content-layer fixed top-0 left-0 right-0 z-50 px-[10vw] py-8 flex justify-between items-center">
+  <div class="text-gold font-playfair italic text-xl sm:text-2xl tracking-wide">Z.S</div>
+  <nav class="flex gap-8 sm:gap-12">
+    <a href="#about" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">About</a>
+    <a href="#expertise" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">Craft</a>
+    <a href="#works" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">Works</a>
+    <a href="#contact" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">Contact</a>
+  </nav>
+</header>
+
+<section class="content-layer relative min-h-screen flex items-center px-[10vw]">
+  <div class="w-full">
+    <p class="font-grotesk text-sm sm:text-base uppercase tracking-mega text-warm/50 mb-4 sm:mb-6 opacity-0" data-fade-up>Hello, I am</p>
+    <h1 class="font-playfair italic text-[12vw] sm:text-[9vw] lg:text-[8vw] leading-none text-warm" data-reveal-chars>Zimo Song</h1>
+    <p class="font-grotesk text-xs sm:text-sm uppercase tracking-mega text-warm/40 mt-8 sm:mt-12 opacity-0" data-fade-up>Digital Craftsman &nbsp;/&nbsp; Aesthete &nbsp;/&nbsp; Code Poet</p>
+  </div>
+</section>
+
+<section id="about" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+  <div class="w-full lg:w-5/12" data-fade-up>
+    <div class="aspect-[3/4] overflow-hidden rounded-[4px] bg-warm/5">
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face&q=85&auto=format" alt="Portrait" class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000" loading="lazy" />
+    </div>
+  </div>
+  <div class="w-full lg:w-7/12 space-y-8" data-fade-up data-delay="0.2">
+    <p class="font-grotesk text-xs uppercase tracking-ultra text-gold">About</p>
+    <p class="font-playfair italic text-3xl sm:text-4xl lg:text-5xl leading-snug text-warm/90 max-w-xl">I don't just write code — I carve experiences in the digital wilderness.</p>
+    <p class="font-grotesk text-sm sm:text-base leading-relaxed text-warm/50 max-w-lg">Based in Shanghai, I design and build digital products that feel like art. My practice bridges minimal aesthetics with obsessive engineering — every interaction considered, every pixel intentional.</p>
+    <p class="font-grotesk text-sm sm:text-base leading-relaxed text-warm/50 max-w-lg">From brand identities to full-stack platforms, I partner with visionary teams to craft digital presences that stand out in a sea of sameness.</p>
+  </div>
+</section>
+
+<section id="expertise" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40">
+  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-20" data-reveal-line>Craft</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">01</span>
+      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Brand Identity</h3>
+      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Visual systems, typography, and tone that make brands unmistakable.</p>
+      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+    </div>
+    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0.15">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">02</span>
+      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Digital Products</h3>
+      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Full-stack web apps, platforms, and tools built with precision engineering.</p>
+      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+    </div>
+    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0.3">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">03</span>
+      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Art Direction</h3>
+      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Photography, motion, and spatial design that evoke feeling and atmosphere.</p>
+      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+    </div>
+  </div>
+</section>
+
+<section id="works" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40">
+  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-20" data-reveal-line>Selected Works</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+    <div class="work-card group cursor-pointer" data-fade-up data-delay="0">
+      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
+        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=450&fit=crop&q=85&auto=format" alt="Ethereal Flow" class="work-img w-full h-full object-cover" loading="lazy" />
+      </div>
+      <div class="mt-4">
+        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">01</p>
+        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Ethereal Flow</p>
+        <p class="font-grotesk text-xs text-warm/30 mt-1">Brand Identity &amp; Digital Experience</p>
+      </div>
+    </div>
+    <div class="work-card group cursor-pointer" data-fade-up data-delay="0.15">
+      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
+        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=450&fit=crop&q=85&auto=format" alt="Nova Platform" class="work-img w-full h-full object-cover" loading="lazy" />
+      </div>
+      <div class="mt-4">
+        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">02</p>
+        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Nova Platform</p>
+        <p class="font-grotesk text-xs text-warm/30 mt-1">Full-stack SaaS Redesign</p>
+      </div>
+    </div>
+    <div class="work-card group cursor-pointer" data-fade-up data-delay="0.3">
+      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
+        <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=800&h=450&fit=crop&q=85&auto=format" alt="Lumiere" class="work-img w-full h-full object-cover" loading="lazy" />
+      </div>
+      <div class="mt-4">
+        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">03</p>
+        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Lumiere</p>
+        <p class="font-grotesk text-xs text-warm/30 mt-1">Interactive Art Installation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40 flex flex-col justify-center">
+  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-12" data-reveal-line>Connect</h2>
+  <div class="space-y-10" data-fade-up>
+    <a href="mailto:hello@zimosong.com" class="magnetic inline-block font-playfair italic text-3xl sm:text-5xl lg:text-7xl text-warm/70 hover:text-gold transition-colors duration-500">hello@zimosong.com</a>
+    <div class="flex gap-8 pt-8">
+      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">Instagram</a>
+      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">Twitter</a>
+      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">LinkedIn</a>
+      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">GitHub</a>
+    </div>
+  </div>
+  <footer class="mt-32 pt-8 border-t border-warm/5">
+    <p class="font-grotesk text-xs text-warm/20 uppercase tracking-ultra">&copy; 2025 Zimo Song. All rights reserved.</p>
+  </footer>
+</section>
+
+<style>
+:root{--warm:#f0ece2;--gold:#c9a96e;--deep:#0a0a0a;--radius:4px}
+*{margin:0;padding:0;box-sizing:border-box}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:var(--warm)/.15;border-radius:2px}
+html{scroll-behavior:auto}
+body{background:var(--deep);cursor:none}
+a,button,.expertise-item,.work-card,.magnetic{cursor:none}
+.content-layer{position:relative;z-index:1}
+.tracking-ultra{letter-spacing:.18em}
+.tracking-mega{letter-spacing:.28em}
+#cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:width .25s ease,height .25s ease,background .25s ease}
+#cursor-dot.hover{width:32px;height:32px;background:transparent;border:1px solid var(--warm);mix-blend-mode:difference}
+.nav-link{position:relative;display:inline-block}
+.nav-link::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s ease}
+.nav-link:hover::after{width:100%}
+.expertise-item{border-color:rgba(240,236,226,.06)}
+.expertise-item:last-child{border-bottom:1px solid rgba(240,236,226,.06)}
+.work-card{overflow:hidden;border-radius:var(--radius)}
+.work-img{filter:grayscale(100%);transition:filter .8s ease,transform .8s cubic-bezier(.25,.1,.25,1);will-change:transform,filter}
+.work-card:hover .work-img{filter:grayscale(0%);transform:scale(1.04)}
+#three-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+@media (max-width:768px){body{cursor:auto}#cursor-dot{display:none}a,button,.expertise-item,.work-card,.magnetic{cursor:pointer}}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+const dot=document.getElementById("cursor-dot");
+let cx=0,cy=0,dx=0,dy=0;
+const isMobile=/Mobi|Android|touch/i.test(navigator.userAgent);
+if(!isMobile){
+document.addEventListener("mousemove",e=>{cx=e.clientX;cy=e.clientY});
+(function ad(){dx+=(cx-dx)*.12;dy+=(cy-dy)*.12;
+dot.style.left=dx+"px";dot.style.top=dy+"px";
+requestAnimationFrame(ad)})();
+document.querySelectorAll("a,button,.expertise-item,.work-card,.magnetic").forEach(el=>{
+el.addEventListener("mouseenter",()=>dot.classList.add("hover"));
+el.addEventListener("mouseleave",()=>dot.classList.remove("hover"))})}
+
+const lenis=new Lenis({duration:1.2,easing:t=>1-Math.pow(1-t,4),smoothWheel:true,direction:"vertical"});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf)}
+requestAnimationFrame(raf);
+
+gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.defaults({scroller:window});
+document.querySelectorAll("[data-fade-up]").forEach(el=>{
+gsap.fromTo(el,{y:60,opacity:0},{y:0,opacity:1,duration:1.2,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 88%",toggleActions:"play none none none"}})});
+document.querySelectorAll("[data-reveal-line]").forEach(el=>{
+gsap.fromTo(el,{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0)",duration:1.4,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 85%",toggleActions:"play none none none"}})});
+document.querySelectorAll("[data-reveal-chars]").forEach(el=>{
+const txt=el.textContent;el.textContent="";[...txt].forEach((c,i)=>{const s=document.createElement("span");s.textContent=c===" "?"\u00A0":c;s.style.display="inline-block";el.appendChild(s)});
+gsap.fromTo(el.children,{y:"110%",opacity:0},{y:"0%",opacity:1,duration:.8,stagger:.04,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 85%",toggleActions:"play none none none"}})});
+
+document.querySelectorAll(".work-card").forEach(card=>{const img=card.querySelector(".work-img");if(!img)return;gsap.fromTo(img,{y:30},{y:-20,ease:"none",scrollTrigger:{trigger:card,start:"top bottom",end:"bottom top",scrub:.6})})});
+
+if(!isMobile){
+const scene=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,.1,100);
+cam.position.z=6;
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById("three-canvas"),alpha:true,antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+const geo=new THREE.IcosahedronGeometry(2.2,1);
+const mat=new THREE.MeshBasicMaterial({color:0xc9a96e,wireframe:true,transparent:true,opacity:.07});
+const ico=new THREE.Mesh(geo,mat);scene.add(ico);
+const pGeo=new THREE.BufferGeometry();const pCount=400;const pPos=new Float32Array(pCount*3);
+for(let i=0;i<pCount*3;i+=3){const a=Math.random()*Math.PI*2;const r=2.8+Math.random()*.4;pPos[i]=Math.cos(a)*r;pPos[i+1]=(Math.random()-.5)*.6;pPos[i+2]=Math.sin(a)*r}
+pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));
+const pMat=new THREE.PointsMaterial({color:0xc9a96e,size:.012,transparent:true,opacity:.25});
+const pts=new THREE.Points(pGeo,pMat);scene.add(pts);
+document.addEventListener("mousemove",e=>{const mx=(e.clientX/window.innerWidth-.5)*.6;const my=(e.clientY/window.innerHeight-.5)*.3;ico.rotation.y+=.001;ico.rotation.x+=.0005;ico.position.x+=(mx-ico.position.x)*.02;ico.position.y+=(-my-ico.position.y)*.02;pts.position.x+=(mx-pts.position.x)*.03;pts.position.y+=(-my-pts.position.y)*.03});
+(function ar(){requestAnimationFrame(ar);ico.rotation.y+=.0008;pts.rotation.y-=.0004;renderer.render(scene,cam)})();
+window.addEventListener("resize",()=>{cam.aspect=window.innerWidth/window.innerHeight;cam.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)})}
+
+document.querySelectorAll(".magnetic").forEach(el=>{
+el.addEventListener("mousemove",e=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)-r.width/2;const y=(e.clientY-r.top)-r.height/2;gsap.to(el,{x:x*.3,y:y*.3,duration:.4,ease:"power2.out"})});
+el.addEventListener("mouseleave",()=>{gsap.to(el,{x:0,y:0,duration:.5,ease:"power3.out"})})});
+</script>
+</body>
+</html>
