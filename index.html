@@ -9,16 +9,96 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a96e"},fontFamily:{playfair:["Playfair Display","SimSun","STSong","Songti SC","serif"],grotesk:["Space Grotesk","PingFang SC","Microsoft YaHei","sans-serif"]}}}}
+tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a96e"},fontFamily:{playfair:["Playfair Display","SimSun","STSong","Songti SC","serif"],grotesk:["Space Grotesk","PingFang SC","Microsoft YaHei","sans-serif"]}}}};
 </script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--deep:#0a0a0a;--warm:#f0ece2;--gold:#c9a96e;--radius:4px}
+html{scroll-behavior:auto}
+body{background:var(--deep);color:var(--warm);font-family:"Space Grotesk","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased;cursor:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:var(--warm)/.15;border-radius:2px}
+
+/* Lenis requires a smooth container - we set html.lenis */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-smooth iframe{pointer-events:none}
+
+/* Cursor */
+#cursor-dot{position:fixed;z-index:9999;width:8px;height:8px;border-radius:50%;background:var(--gold);pointer-events:none;transform:translate(-50%,-50%);transition:width .25s ease,height .25s ease,background .25s ease;will-change:transform,width,height}
+#cursor-dot.hover{width:40px;height:40px;background:transparent;border:1px solid var(--gold);mix-blend-mode:difference}
+
+/* Content layer */
+.content-layer{position:relative;z-index:2}
+
+/* Nav */
+.nav-link{transition:color .3s ease}
+.nav-link:hover{color:var(--gold)}
+
+/* Tracking helpers */
+.tracking-ultra{letter-spacing:.15em}
+.tracking-mega{letter-spacing:.25em}
+
+/* Char reveal */
+.char-wrap{display:inline-block;overflow:hidden;vertical-align:bottom}
+.char-wrap span{display:inline-block;transform:translateY(110%);opacity:0}
+
+/* Expertise list */
+.expertise-item{border-bottom:1px solid rgba(240,236,226,.06);transition:background .5s ease,padding-left .4s ease}
+.expertise-item:hover{background:rgba(240,236,226,.02);padding-left:1rem}
+.expertise-item .arrow{opacity:0;transform:translateX(-8px);transition:opacity .4s ease,transform .4s ease}
+.expertise-item:hover .arrow{opacity:1;transform:translateX(0)}
+.expertise-item .underline-bar{position:absolute;bottom:-1px;left:0;width:0;height:1px;background:var(--gold);transition:width .6s cubic-bezier(.25,.1,.25,1)}
+.expertise-item:hover .underline-bar{width:100%}
+
+/* Works */
+.work-card{position:relative;overflow:hidden;border-radius:var(--radius)}
+.work-img{filter:grayscale(100%);transition:filter .8s ease,transform .8s cubic-bezier(.25,.1,.25,1);will-change:transform,filter}
+.work-card:hover .work-img{filter:grayscale(0%);transform:scale(1.04)}
+
+/* Three canvas */
+#three-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+
+/* Magnetic */
+.magnetic{display:inline-block}
+
+/* Contact underline */
+.contact-link{position:relative;display:inline-block}
+.contact-link::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .5s cubic-bezier(.25,.1,.25,1)}
+.contact-link:hover::after{width:100%}
+
+/* Gradient fallback for mobile */
+.mobile-gradient{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,rgba(201,169,110,.04) 0%,transparent 60%)}
+
+@media (max-width:768px){
+  body{cursor:auto}
+  #cursor-dot{display:none}
+  a,button,.expertise-item,.work-card,.magnetic{cursor:pointer}
+  .mobile-gradient{display:block}
+}
+</style>
 </head>
-<body class="bg-deep text-warm font-grotesk antialiased">
+<body>
+
+<!-- Mobile fallback gradient -->
+<div class="mobile-gradient"></div>
+
+<!-- Cursor -->
 <div id="cursor-dot" aria-hidden="true"></div>
+
+<!-- Three.js canvas -->
 <canvas id="three-canvas"></canvas>
 
+<!-- Lenis wrapper -->
+<div id="lenis-wrapper">
+
+<!-- Header -->
 <header class="content-layer fixed top-0 left-0 right-0 z-50 px-[10vw] py-8 flex justify-between items-center">
   <div class="text-gold font-playfair italic text-xl sm:text-2xl tracking-wide">Z.S</div>
-  <nav class="flex gap-8 sm:gap-12">
+  <nav class="flex gap-6 sm:gap-12">
     <a href="#about" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">About</a>
     <a href="#expertise" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">Craft</a>
     <a href="#works" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/70">Works</a>
@@ -26,6 +106,7 @@ tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a
   </nav>
 </header>
 
+<!-- Hero -->
 <section class="content-layer relative min-h-screen flex items-center px-[10vw]">
   <div class="w-full">
     <p class="font-grotesk text-sm sm:text-base uppercase tracking-mega text-warm/50 mb-4 sm:mb-6 opacity-0" data-fade-up>Hello, I am</p>
@@ -34,6 +115,7 @@ tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a
   </div>
 </section>
 
+<!-- About -->
 <section id="about" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
   <div class="w-full lg:w-5/12" data-fade-up>
     <div class="aspect-[3/4] overflow-hidden rounded-[4px] bg-warm/5">
@@ -48,107 +130,79 @@ tailwind.config={theme:{extend:{colors:{deep:"#0a0a0a",warm:"#f0ece2",gold:"#c9a
   </div>
 </section>
 
+<!-- Expertise -->
 <section id="expertise" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40">
   <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-20" data-reveal-line>Craft</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
-    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0">
-      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">01</span>
-      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Brand Identity</h3>
-      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Visual systems, typography, and tone that make brands unmistakable.</p>
-      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+  <div class="space-y-0">
+    <div class="expertise-item group cursor-pointer relative py-10 flex items-center gap-6 sm:gap-16" data-fade-up data-delay="0">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra shrink-0 w-8">01</span>
+      <div class="flex-1">
+        <h3 class="font-playfair italic text-2xl sm:text-3xl lg:text-4xl text-warm/80">Brand Identity</h3>
+        <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-1">Visual systems, typography, and tone that make brands unmistakable</p>
+      </div>
+      <span class="arrow font-grotesk text-xs text-gold/60 uppercase tracking-ultra shrink-0">&rarr;</span>
+      <span class="underline-bar"></span>
     </div>
-    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0.15">
-      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">02</span>
-      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Digital Products</h3>
-      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Full-stack web apps, platforms, and tools built with precision engineering.</p>
-      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+    <div class="expertise-item group cursor-pointer relative py-10 flex items-center gap-6 sm:gap-16" data-fade-up data-delay="0.15">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra shrink-0 w-8">02</span>
+      <div class="flex-1">
+        <h3 class="font-playfair italic text-2xl sm:text-3xl lg:text-4xl text-warm/80">Digital Products</h3>
+        <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-1">End-to-end platforms that blend function with feeling</p>
+      </div>
+      <span class="arrow font-grotesk text-xs text-gold/60 uppercase tracking-ultra shrink-0">&rarr;</span>
+      <span class="underline-bar"></span>
     </div>
-    <div class="expertise-item group cursor-pointer border-t border-warm/10 py-10 px-2 transition-colors duration-500 hover:bg-warm/[0.03]" data-fade-up data-delay="0.3">
-      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra">03</span>
-      <h3 class="font-playfair italic text-2xl sm:text-3xl text-warm/80 mt-4">Art Direction</h3>
-      <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-2 max-w-xs">Photography, motion, and spatial design that evoke feeling and atmosphere.</p>
-      <span class="inline-block mt-6 text-xs text-gold/0 group-hover:text-gold/60 transition-colors duration-500 uppercase tracking-ultra">Learn more &rarr;</span>
+    <div class="expertise-item group cursor-pointer relative py-10 flex items-center gap-6 sm:gap-16" data-fade-up data-delay="0.3">
+      <span class="font-grotesk text-xs text-gold/40 uppercase tracking-ultra shrink-0 w-8">03</span>
+      <div class="flex-1">
+        <h3 class="font-playfair italic text-2xl sm:text-3xl lg:text-4xl text-warm/80">Interactive Experiences</h3>
+        <p class="font-grotesk text-xs sm:text-sm text-warm/30 mt-1">Immersive installations where technology meets poetry</p>
+      </div>
+      <span class="arrow font-grotesk text-xs text-gold/60 uppercase tracking-ultra shrink-0">&rarr;</span>
+      <span class="underline-bar"></span>
     </div>
   </div>
 </section>
 
+<!-- Selected Works -->
 <section id="works" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40">
-  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-20" data-reveal-line>Selected Works</h2>
+  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-20" data-reveal-line>Works</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
     <div class="work-card group cursor-pointer" data-fade-up data-delay="0">
-      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
-        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=450&fit=crop&q=85&auto=format" alt="Ethereal Flow" class="work-img w-full h-full object-cover" loading="lazy" />
+      <div class="ratio-16-9 overflow-hidden rounded-[4px]">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNDUwJz4gPGRlZnM+IDxsaW5lYXJHcmFkaWVudCBpZD0nZzEnIHgxPScwJScgeTE9JzAlJyB4Mj0nMTAwJScgeTI9JzEwMCUnPiA8c3RvcCBvZmZzZXQ9JzAlJyBzdHlsZT0nc3RvcC1jb2xvcjojMWExYTJlO3N0b3Atb3BhY2l0eToxJy8+IDxzdG9wIG9mZnNldD0nNTAlJyBzdHlsZT0nc3RvcC1jb2xvcjojMTYyMTNlO3N0b3Atb3BhY2l0eToxJy8+IDxzdG9wIG9mZnNldD0nMTAwJScgc3R5bGU9J3N0b3AtY29sb3I6IzBmMzQ2MDtzdG9wLW9wYWNpdHk6MScvPiA8L2xpbmVhckdyYWRpZW50PiA8ZmlsdGVyIGlkPSdub2lzZTEnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjY1JyBudW1PY3RhdmVzPSczJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdHlwZT0nc2F0dXJhdGUnIHZhbHVlcz0nMCcvPjwvZmlsdGVyPiA8L2RlZnM+IDxyZWN0IHdpZHRoPSc4MDAnIGhlaWdodD0nNDUwJyBmaWxsPSd1cmwoI2cxKScvPiA8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzQ1MCcgZmlsdGVyPSd1cmwoI25vaXNlMSknIG9wYWNpdHk9JzAuMDUnLz4gPGNpcmNsZSBjeD0nNjUwJyBjeT0nMTAwJyByPScxODAnIGZpbGw9J25vbmUnIHN0cm9rZT0nI2M5YTk2ZScgc3Ryb2tlLXdpZHRoPScwLjUnIG9wYWNpdHk9JzAuMycvPiA8Y2lyY2xlIGN4PSc2ODAnIGN5PScxMzAnIHI9JzEyMCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjYzlhOTZlJyBzdHJva2Utd2lkdGg9JzAuMycgb3BhY2l0eT0nMC4yJy8+IDxwYXRoIGQ9J00wIDM1MCBRMjAwIDI4MCA0MDAgMzIwIFQ4MDAgMzAwJyBmaWxsPSdub25lJyBzdHJva2U9JyNjOWE5NmUnIHN0cm9rZS13aWR0aD0nMC44JyBvcGFjaXR5PScwLjE1Jy8+IDxwYXRoIGQ9J00wIDM4MCBRMjAwIDMxMCA0MDAgMzUwIFQ4MDAgMzMwJyBmaWxsPSdub25lJyBzdHJva2U9JyNjOWE5NmUnIHN0cm9rZS13aWR0aD0nMC41JyBvcGFjaXR5PScwLjEnLz4gPHRleHQgeD0nMzAnIHk9JzQxMCcgZm9udC1mYW1pbHk9J3NlcmlmJyBmb250LXNpemU9JzEyJyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjQnIGxldHRlci1zcGFjaW5nPSc0Jz5FVEhFUkVBTCBGTE9XPC90ZXh0PiA8L3N2Zz4=" alt="Ethereal Flow" class="work-img w-full h-full object-cover" loading="lazy" />
       </div>
-      <div class="mt-4">
-        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">01</p>
-        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Ethereal Flow</p>
-        <p class="font-grotesk text-xs text-warm/30 mt-1">Brand Identity &amp; Digital Experience</p>
-      </div>
+      <p class="font-grotesk text-xs uppercase tracking-ultra text-warm/50 mt-4">Ethereal Flow</p>
     </div>
     <div class="work-card group cursor-pointer" data-fade-up data-delay="0.15">
-      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
-        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=450&fit=crop&q=85&auto=format" alt="Nova Platform" class="work-img w-full h-full object-cover" loading="lazy" />
+      <div class="ratio-16-9 overflow-hidden rounded-[4px]">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNDUwJz4gPGRlZnM+IDxsaW5lYXJHcmFkaWVudCBpZD0nZzInIHgxPScwJScgeTE9JzAlJyB4Mj0nMTAwJScgeTI9JzEwMCUnPiA8c3RvcCBvZmZzZXQ9JzAlJyBzdHlsZT0nc3RvcC1jb2xvcjojMGUwZTBlO3N0b3Atb3BhY2l0eToxJy8+IDxzdG9wIG9mZnNldD0nMTAwJScgc3R5bGU9J3N0b3AtY29sb3I6IzFhMjAyNTtzdG9wLW9wYWNpdHk6MScvPiA8L2xpbmVhckdyYWRpZW50PiA8L2RlZnM+IDxyZWN0IHdpZHRoPSc4MDAnIGhlaWdodD0nNDUwJyBmaWxsPSd1cmwoI2cyKScvPiA8cmVjdCB4PSc0MCcgeT0nMTAnIHdpZHRoPSc3MjAnIGhlaWdodD0nNDMwJyBmaWxsPSdub25lJyBzdHJva2U9JyNjOWE5NmUnIHN0cm9rZS13aWR0aD0nMC41JyBvcGFjaXR5PScwLjInLz4gPHJlY3QgeD0nODAnIHk9JzMwJyB3aWR0aD0nNjQwJyBoZWlnaHQ9JzM5MCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjYzlhOTZlJyBzdHJva2Utd2lkdGg9JzAuMycgb3BhY2l0eT0nMC4xNScvPiA8cmVjdCB4PScxMjAnIHk9JzYwJyB3aWR0aD0nNTYwJyBoZWlnaHQ9JzMzMCcgZmlsbD0nbm9uZScgc3Ryb2tlPScjYzlhOTZlJyBzdHJva2Utd2lkdGg9JzAuNCcgb3BhY2l0eT0nMC4yNScvPiA8bGluZSB4MT0nNDAnIHkxPSc4MCcgeDI9Jzc2MCcgeTI9JzgwJyBzdHJva2U9JyNjOWE5NmUnIHN0cm9rZS13aWR0aD0nMC4yJyBvcGFjaXR5PScwLjEnLz4gPGxpbmUgeDE9JzQwJyB5MT0nMjAwJyB4Mj0nNzYwJyB5Mj0nMjAwJyBzdHJva2U9JyNjOWE5NmUnIHN0cm9rZS13aWR0aD0nMC4yJyBvcGFjaXR5PScwLjA4Jy8+IDxsaW5lIHgxPSc0MCcgeTE9JzM1MCcgeDI9Jzc2MCcgeTI9JzM1MCcgc3Ryb2tlPScjYzlhOTZlJyBzdHJva2Utd2lkdGg9JzAuMicgb3BhY2l0eT0nMC4xJy8+IDxjaXJjbGUgY3g9JzQwMCcgY3k9JzQwJyByPSczJyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjUnLz4gPHRleHQgeD0nNzAnIHk9JzQyMCcgZm9udC1mYW1pbHk9J3NlcmlmJyBmb250LXNpemU9JzExJyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjMnIGxldHRlci1zcGFjaW5nPSczJz5OT1ZBIFBMQVRGT1JNPC90ZXh0PiA8L3N2Zz4=" alt="Nova Platform" class="work-img w-full h-full object-cover" loading="lazy" />
       </div>
-      <div class="mt-4">
-        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">02</p>
-        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Nova Platform</p>
-        <p class="font-grotesk text-xs text-warm/30 mt-1">Full-stack SaaS Redesign</p>
-      </div>
+      <p class="font-grotesk text-xs uppercase tracking-ultra text-warm/50 mt-4">Nova Platform</p>
     </div>
     <div class="work-card group cursor-pointer" data-fade-up data-delay="0.3">
-      <div class="aspect-video overflow-hidden rounded-[4px] bg-warm/5">
-        <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=800&h=450&fit=crop&q=85&auto=format" alt="Lumiere" class="work-img w-full h-full object-cover" loading="lazy" />
+      <div class="ratio-16-9 overflow-hidden rounded-[4px]">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA4MDAgNDUwJz4gPGRlZnM+IDxyYWRpYWxHcmFkaWVudCBpZD0nZzMnIGN4PSc0MCUnIGN5PSczNScgcj0nNjAlJz4gPHN0b3Agb2Zmc2V0PScwJScgc3R5bGU9J3N0b3AtY29sb3I6IzI0MWYzNTtzdG9wLW9wYWNpdHk6MScvPiA8c3RvcCBvZmZzZXQ9JzUwJScgc3R5bGU9J3N0b3AtY29sb3I6IzBhMGExYTtzdG9wLW9wYWNpdHk6MScvPiA8c3RvcCBvZmZzZXQ9JzEwMCUnIHN0eWxlPSdzdG9wLWNvbG9yOiMwYTBhMGU7c3RvcC1vcGFjaXR5OjEnLz4gPC9yYWRpYWxHcmFkaWVudD4gPC9kZWZzPiA8cmVjdCB3aWR0aD0nODAwJyBoZWlnaHQ9JzQ1MCcgZmlsbD0ndXJsKCNnMyknLz4gPGNpcmNsZSBjeD0nMzIwJyBjeT0nMTYwJyByPScxJyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjknLz4gPGNpcmNsZSBjeD0nMzUwJyBjeT0nMjQwJyByPScxLjUnIGZpbGw9JyNjOWE5NmUnIG9wYWNpdHk9JzAuNycvPiA8Y2lyY2xlIGN4PSczODAnIGN5PScxODAnIHI9JzAuOCcgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC44Jy8+IDxjaXJjbGUgY3g9JzUwMCcgY3k9JzEzMCcgcj0nMS4yJyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjYnLz4gPGNpcmNsZSBjeD0nNDgwJyBjeT0nMjkwJyByPScwLjknIGZpbGw9JyNjOWE5NmUnIG9wYWNpdHk9JzAuNScvPiA8Y2lyY2xlIGN4PSc2MDAnIGN5PScyMDAnIHI9JzEuOCcgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC43Jy8+IDxjaXJjbGUgY3g9JzYyMCcgY3k9JzI4MCcgcj0nMC43JyBmaWxsPScjYzlhOTZlJyBvcGFjaXR5PScwLjQnLz4gPGNpcmNsZSBjeD0nMjAwJyBjeT0nMzUwJyByPScwLjYnIGZpbGw9JyNjOWE5NmUnIG9wYWNpdHk9JzAuMycvPiA8Y2lyY2xlIGN4PScyODAnIGN5PScyODAnIHI9JzEuMScgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC41NScvPiA8Y2lyY2xlIGN4PSc0MzAnIGN5PSczMDAnIHI9JzAuNScgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC40NScvPiA8Y2lyY2xlIGN4PSc1NTAnIGN5PSczMzAnIHI9JzAuOScgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC4zNScvPiA8Y2lyY2xlIGN4PSc2ODAnIGN5PSczMTAnIHI9JzAuNycgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC4zJy8+IDx0ZXh0IHg9JzI4JyB5PSc0MjgnIGZvbnQtZmFtaWx5PSdzZXJpZicgZm9udC1zaXplPScxMycgZmlsbD0nI2M5YTk2ZScgb3BhY2l0eT0nMC40NScgbGV0dGVyLXNwYWNpbmc9JzQnPkxVTUlFUkU8L3RleHQ+IDwvc3ZnPg==" alt="Lumiere" class="work-img w-full h-full object-cover" loading="lazy" />
       </div>
-      <div class="mt-4">
-        <p class="font-grotesk text-xs text-gold/60 uppercase tracking-ultra">03</p>
-        <p class="font-playfair italic text-xl sm:text-2xl text-warm/80 mt-1">Lumiere</p>
-        <p class="font-grotesk text-xs text-warm/30 mt-1">Interactive Art Installation</p>
-      </div>
+      <p class="font-grotesk text-xs uppercase tracking-ultra text-warm/50 mt-4">Lumiere</p>
     </div>
   </div>
 </section>
 
+<!-- Contact / Footer -->
 <section id="contact" class="content-layer min-h-screen px-[10vw] py-32 sm:py-40 flex flex-col justify-center">
-  <h2 class="font-playfair italic text-5xl sm:text-7xl lg:text-8xl text-warm mb-12" data-reveal-line>Connect</h2>
-  <div class="space-y-10" data-fade-up>
-    <a href="mailto:hello@zimosong.com" class="magnetic inline-block font-playfair italic text-3xl sm:text-5xl lg:text-7xl text-warm/70 hover:text-gold transition-colors duration-500">hello@zimosong.com</a>
-    <div class="flex gap-8 pt-8">
-      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">Instagram</a>
-      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">Twitter</a>
-      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">LinkedIn</a>
-      <a href="#" class="nav-link text-xs sm:text-sm uppercase tracking-ultra text-warm/40 hover:text-gold transition-colors">GitHub</a>
-    </div>
+  <p class="font-grotesk text-xs uppercase tracking-ultra text-gold mb-8 opacity-0" data-fade-up>Get in Touch</p>
+  <h2 class="font-playfair italic text-[10vw] sm:text-[7vw] lg:text-[6vw] leading-none text-warm mb-16" data-reveal-line>Let's Connect</h2>
+  <a href="mailto:zimo@example.com" class="magnetic contact-link font-playfair italic text-3xl sm:text-5xl lg:text-6xl text-warm/70 hover:text-warm transition-colors duration-500 opacity-0" data-fade-up data-delay="0.2">zimo@example.com</a>
+  <div class="flex gap-6 mt-24 opacity-0" data-fade-up data-delay="0.4">
+    <a href="#" class="font-grotesk text-xs uppercase tracking-ultra text-warm/30 hover:text-gold transition-colors duration-300">Instagram</a>
+    <a href="#" class="font-grotesk text-xs uppercase tracking-ultra text-warm/30 hover:text-gold transition-colors duration-300">LinkedIn</a>
+    <a href="#" class="font-grotesk text-xs uppercase tracking-ultra text-warm/30 hover:text-gold transition-colors duration-300">Dribbble</a>
   </div>
-  <footer class="mt-32 pt-8 border-t border-warm/5">
-    <p class="font-grotesk text-xs text-warm/20 uppercase tracking-ultra">&copy; 2025 Zimo Song. All rights reserved.</p>
-  </footer>
+  <p class="font-grotesk text-xs text-warm/20 mt-12 opacity-0" data-fade-up data-delay="0.5">&copy; 2025 Zimo Song. All rights reserved.</p>
 </section>
 
-<style>
-:root{--warm:#f0ece2;--gold:#c9a96e;--deep:#0a0a0a;--radius:4px}
-*{margin:0;padding:0;box-sizing:border-box}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--deep)}
-::-webkit-scrollbar-thumb{background:var(--warm)/.15;border-radius:2px}
-html{scroll-behavior:auto}
-body{background:var(--deep);cursor:none}
-a,button,.expertise-item,.work-card,.magnetic{cursor:none}
-.content-layer{position:relative;z-index:1}
-.tracking-ultra{letter-spacing:.18em}
-.tracking-mega{letter-spacing:.28em}
-#cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:width .25s ease,height .25s ease,background .25s ease}
-#cursor-dot.hover{width:32px;height:32px;background:transparent;border:1px solid var(--warm);mix-blend-mode:difference}
-.nav-link{position:relative;display:inline-block}
-.nav-link::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s ease}
-.nav-link:hover::after{width:100%}
-.expertise-item{border-color:rgba(240,236,226,.06)}
-.expertise-item:last-child{border-bottom:1px solid rgba(240,236,226,.06)}
-.work-card{overflow:hidden;border-radius:var(--radius)}
-.work-img{filter:grayscale(100%);transition:filter .8s ease,transform .8s cubic-bezier(.25,.1,.25,1);will-change:transform,filter}
-.work-card:hover .work-img{filter:grayscale(0%);transform:scale(1.04)}
-#three-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
-@media (max-width:768px){body{cursor:auto}#cursor-dot{display:none}a,button,.expertise-item,.work-card,.magnetic{cursor:pointer}}
-</style>
+</div><!-- /#lenis-wrapper -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -156,55 +210,179 @@ a,button,.expertise-item,.work-card,.magnetic{cursor:none}
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
 <script>
-const dot=document.getElementById("cursor-dot");
-let cx=0,cy=0,dx=0,dy=0;
-const isMobile=/Mobi|Android|touch/i.test(navigator.userAgent);
-if(!isMobile){
-document.addEventListener("mousemove",e=>{cx=e.clientX;cy=e.clientY});
-(function ad(){dx+=(cx-dx)*.12;dy+=(cy-dy)*.12;
-dot.style.left=dx+"px";dot.style.top=dy+"px";
-requestAnimationFrame(ad)})();
-document.querySelectorAll("a,button,.expertise-item,.work-card,.magnetic").forEach(el=>{
-el.addEventListener("mouseenter",()=>dot.classList.add("hover"));
-el.addEventListener("mouseleave",()=>dot.classList.remove("hover"))})}
+(function(){
+  'use strict';
 
-const lenis=new Lenis({duration:1.2,easing:t=>1-Math.pow(1-t,4),smoothWheel:true,direction:"vertical"});
-function raf(t){lenis.raf(t);requestAnimationFrame(raf)}
-requestAnimationFrame(raf);
+  var isMobile = /Mobi|Android|touch/i.test(navigator.userAgent);
 
-gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.defaults({scroller:window});
-document.querySelectorAll("[data-fade-up]").forEach(el=>{
-gsap.fromTo(el,{y:60,opacity:0},{y:0,opacity:1,duration:1.2,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 88%",toggleActions:"play none none none"}})});
-document.querySelectorAll("[data-reveal-line]").forEach(el=>{
-gsap.fromTo(el,{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0)",duration:1.4,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 85%",toggleActions:"play none none none"}})});
-document.querySelectorAll("[data-reveal-chars]").forEach(el=>{
-const txt=el.textContent;el.textContent="";[...txt].forEach((c,i)=>{const s=document.createElement("span");s.textContent=c===" "?"\u00A0":c;s.style.display="inline-block";el.appendChild(s)});
-gsap.fromTo(el.children,{y:"110%",opacity:0},{y:"0%",opacity:1,duration:.8,stagger:.04,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 85%",toggleActions:"play none none none"}})});
+  // ── Cursor ──────────────────────────────────────
+  var dot = document.getElementById('cursor-dot');
+  if (!isMobile && dot) {
+    var cx = 0, cy = 0, dx = 0, dy = 0;
+    document.addEventListener('mousemove', function(e) { cx = e.clientX; cy = e.clientY; });
+    (function anim() {
+      dx += (cx - dx) * 0.12;
+      dy += (cy - dy) * 0.12;
+      dot.style.left = dx + 'px';
+      dot.style.top  = dy + 'px';
+      requestAnimationFrame(anim);
+    })();
+    var hoverTargets = document.querySelectorAll('a,button,.expertise-item,.work-card,.magnetic');
+    hoverTargets.forEach(function(el) {
+      el.addEventListener('mouseenter', function() { dot.classList.add('hover'); });
+      el.addEventListener('mouseleave', function() { dot.classList.remove('hover'); });
+    });
+  }
 
-document.querySelectorAll(".work-card").forEach(card=>{const img=card.querySelector(".work-img");if(!img)return;gsap.fromTo(img,{y:30},{y:-20,ease:"none",scrollTrigger:{trigger:card,start:"top bottom",end:"bottom top",scrub:.6})})});
+  // ── Lenis Smooth Scroll ────────────────────────
+  var lenis = new Lenis({
+    duration: 1.2,
+    easing: function(t) { return 1 - Math.pow(1 - t, 4); },
+    smoothWheel: true,
+    direction: 'vertical'
+  });
 
-if(!isMobile){
-const scene=new THREE.Scene();
-const cam=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,.1,100);
-cam.position.z=6;
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById("three-canvas"),alpha:true,antialias:true});
-renderer.setSize(window.innerWidth,window.innerHeight);renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
-const geo=new THREE.IcosahedronGeometry(2.2,1);
-const mat=new THREE.MeshBasicMaterial({color:0xc9a96e,wireframe:true,transparent:true,opacity:.07});
-const ico=new THREE.Mesh(geo,mat);scene.add(ico);
-const pGeo=new THREE.BufferGeometry();const pCount=400;const pPos=new Float32Array(pCount*3);
-for(let i=0;i<pCount*3;i+=3){const a=Math.random()*Math.PI*2;const r=2.8+Math.random()*.4;pPos[i]=Math.cos(a)*r;pPos[i+1]=(Math.random()-.5)*.6;pPos[i+2]=Math.sin(a)*r}
-pGeo.setAttribute("position",new THREE.BufferAttribute(pPos,3));
-const pMat=new THREE.PointsMaterial({color:0xc9a96e,size:.012,transparent:true,opacity:.25});
-const pts=new THREE.Points(pGeo,pMat);scene.add(pts);
-document.addEventListener("mousemove",e=>{const mx=(e.clientX/window.innerWidth-.5)*.6;const my=(e.clientY/window.innerHeight-.5)*.3;ico.rotation.y+=.001;ico.rotation.x+=.0005;ico.position.x+=(mx-ico.position.x)*.02;ico.position.y+=(-my-ico.position.y)*.02;pts.position.x+=(mx-pts.position.x)*.03;pts.position.y+=(-my-pts.position.y)*.03});
-(function ar(){requestAnimationFrame(ar);ico.rotation.y+=.0008;pts.rotation.y-=.0004;renderer.render(scene,cam)})();
-window.addEventListener("resize",()=>{cam.aspect=window.innerWidth/window.innerHeight;cam.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight)})}
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
 
-document.querySelectorAll(".magnetic").forEach(el=>{
-el.addEventListener("mousemove",e=>{const r=el.getBoundingClientRect();const x=(e.clientX-r.left)-r.width/2;const y=(e.clientY-r.top)-r.height/2;gsap.to(el,{x:x*.3,y:y*.3,duration:.4,ease:"power2.out"})});
-el.addEventListener("mouseleave",()=>{gsap.to(el,{x:0,y:0,duration:.5,ease:"power3.out"})})});
+  // Connect GSAP ScrollTrigger to Lenis
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  // ── GSAP & ScrollTrigger ───────────────────────
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Fade-up
+  document.querySelectorAll('[data-fade-up]').forEach(function(el) {
+    gsap.fromTo(el,
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  // Line reveal (clipPath)
+  document.querySelectorAll('[data-reveal-line]').forEach(function(el) {
+    gsap.fromTo(el,
+      { clipPath: 'inset(0 100% 0 0)' },
+      { clipPath: 'inset(0 0% 0 0)', duration: 1.4, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  // Character-by-character reveal with overflow:hidden wraps
+  document.querySelectorAll('[data-reveal-chars]').forEach(function(el) {
+    var text = el.textContent;
+    el.textContent = '';
+    for (var i = 0; i < text.length; i++) {
+      var charWrap = document.createElement('span');
+      charWrap.className = 'char-wrap';
+      var charSpan = document.createElement('span');
+      charSpan.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+      charWrap.appendChild(charSpan);
+      el.appendChild(charWrap);
+    }
+    gsap.to(el.querySelectorAll('.char-wrap span'), {
+      y: '0%', opacity: 1, duration: 0.8, stagger: 0.04, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // ── Works parallax ─────────────────────────────
+  document.querySelectorAll('.work-card').forEach(function(card) {
+    var img = card.querySelector('.work-img');
+    if (!img) return;
+    gsap.fromTo(img, { y: 30 }, {
+      y: -20, ease: 'none',
+      scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
+    });
+  });
+
+  // ── Three.js Background ────────────────────────
+  if (!isMobile) {
+    var scene = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    cam.position.z = 6;
+
+    var renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('three-canvas'),
+      alpha: true,
+      antialias: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+    // Wireframe icosahedron
+    var icoGeo = new THREE.IcosahedronGeometry(2.2, 1);
+    var icoMat = new THREE.MeshBasicMaterial({
+      color: 0xc9a96e, wireframe: true, transparent: true, opacity: 0.07
+    });
+    var ico = new THREE.Mesh(icoGeo, icoMat);
+    scene.add(ico);
+
+    // Particle ring
+    var pGeo = new THREE.BufferGeometry();
+    var pCount = 400;
+    var pPos = new Float32Array(pCount * 3);
+    for (var i = 0; i < pCount * 3; i += 3) {
+      var a = Math.random() * Math.PI * 2;
+      var r = 2.8 + Math.random() * 0.4;
+      pPos[i]     = Math.cos(a) * r;
+      pPos[i + 1] = (Math.random() - 0.5) * 0.6;
+      pPos[i + 2] = Math.sin(a) * r;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    var pMat = new THREE.PointsMaterial({
+      color: 0xc9a96e, size: 0.012, transparent: true, opacity: 0.25
+    });
+    var pts = new THREE.Points(pGeo, pMat);
+    scene.add(pts);
+
+    // Mouse-driven offset for particles and ico
+    document.addEventListener('mousemove', function(e) {
+      var mx = (e.clientX / window.innerWidth - 0.5) * 0.6;
+      var my = (e.clientY / window.innerHeight - 0.5) * 0.3;
+      // slight follow
+      ico.position.x += (mx - ico.position.x) * 0.02;
+      ico.position.y += (-my - ico.position.y) * 0.02;
+      pts.position.x  += (mx - pts.position.x) * 0.03;
+      pts.position.y  += (-my - pts.position.y) * 0.03;
+    });
+
+    (function ar() {
+      requestAnimationFrame(ar);
+      ico.rotation.y += 0.0008;
+      pts.rotation.y  -= 0.0004;
+      renderer.render(scene, cam);
+    })();
+
+    window.addEventListener('resize', function() {
+      cam.aspect = window.innerWidth / window.innerHeight;
+      cam.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  }
+
+  // ── Magnetic hover ─────────────────────────────
+  document.querySelectorAll('.magnetic').forEach(function(el) {
+    el.addEventListener('mousemove', function(e) {
+      var rect = el.getBoundingClientRect();
+      var x = (e.clientX - rect.left) - rect.width / 2;
+      var y = (e.clientY - rect.top) - rect.height / 2;
+      gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.4, ease: 'power2.out' });
+    });
+    el.addEventListener('mouseleave', function() {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'power3.out' });
+    });
+  });
+
+})();
 </script>
 </body>
 </html>
