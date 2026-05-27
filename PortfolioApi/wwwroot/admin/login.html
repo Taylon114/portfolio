@@ -120,7 +120,8 @@ const errMsg = {
   '1': 'User not found',
   '2': 'Wrong password',
   '3': 'Please enter both username and password',
-  '4': 'Server error, please try again later'
+  '4': 'Server error, please try again later',
+  '5': 'Too many failed attempts. Please try again in 15 minutes.'
 };
 if (errCode && errMsg[errCode]) {
   const el = document.getElementById('error');

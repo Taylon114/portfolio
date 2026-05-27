@@ -222,6 +222,7 @@ body {
   <button class="nav-item active" data-panel="site">Site Content</button>
   <button class="nav-item" data-panel="expertise">Expertise</button>
   <button class="nav-item" data-panel="projects">Projects</button>
+  <button class="nav-item" data-panel="backup">Backup</button>
   <div class="spacer"></div>
   <form method="post" action="/api/auth/logout">
     <button type="submit" class="logout-btn">Sign Out</button>
@@ -253,6 +254,25 @@ body {
 </div>
 
 <div class="toast" id="toast">Saved</div>
+
+<div id="panel-backup" class="panel">
+  <h2>Backup &amp; Restore</h2>
+  
+  <div class="form-section">
+    <h3>Create Backup</h3>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">
+      Export all site content, expertise, and projects as a JSON file.
+    </p>
+    <button class="btn" onclick="createBackup()">Create Backup Now</button>
+  </div>
+
+  <div class="form-section">
+    <h3>Available Backups</h3>
+    <div id="backup-list">
+      <p style="color:var(--muted);font-size:0.85rem;">Loading backups...</p>
+    </div>
+  </div>
+</div>
 
 <script>
 // ─────── Navigation ───────
@@ -429,6 +449,52 @@ async function deleteProject(id) {
 }
 
 function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+
+// ─────── Backup ───────
+async function createBackup() {
+  try {
+    const res = await apiFetch('/api/admin/backup', { method: 'POST' });
+    const data = await res.json();
+    toast('Backup created: ' + data.fileName);
+    loadBackups();
+  } catch(e) {}
+}
+
+async function loadBackups() {
+  try {
+    const res = await apiFetch('/api/admin/backup/list');
+    const items = await res.json();
+    const container = document.getElementById('backup-list');
+    if (items.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">No backups yet.</p>';
+      return;
+    }
+    container.innerHTML = items.map(item => 
+      <div class="item-row">
+        <span style="flex:2;font-size:0.8rem;color:var(--warm);"></span>
+        <span style="flex:1;font-size:0.75rem;color:var(--muted);"> KB</span>
+        <span style="flex:1.5;font-size:0.75rem;color:var(--muted);"></span>
+        <a href="/api/admin/backup/download/" class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;text-decoration:none;" download>Download</a>
+        <button class="btn btn-secondary" onclick="restoreBackup('')" style="padding:6px 12px;font-size:0.7rem;">Restore</button>
+      </div>
+    ).join('');
+  } catch(e) {
+    document.getElementById('backup-list').innerHTML = '<p style="color:var(--danger);font-size:0.85rem;">Failed to load backups</p>';
+  }
+}
+
+async function restoreBackup(name) {
+  if (!confirm('Restore from "' + name + '"? This will overwrite all current data.')) return;
+  try {
+    await apiFetch('/api/admin/backup/restore/' + encodeURIComponent(name), { method: 'POST' });
+    toast('Backup restored successfully! Refreshing data...');
+    loadSiteContent();
+    loadExpertise();
+    loadProjects();
+    loadBackups();
+  } catch(e) {}
+}
 
 // Init
 loadSiteContent();
