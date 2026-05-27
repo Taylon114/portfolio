@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Z.S Portfolio</title>
+<style>
+:root {
+  --warm: #e8e2d4;
+  --gold: #d4ad57;
+  --bg: #0b0b0a;
+  --card: #131312;
+  --border: #2a2a25;
+  --muted: #6b6b60;
+  --radius: 6px;
+  --danger: #c0392b;
+  --success: #27ae60;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--warm);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
+/* Layout */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 240px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+.sidebar h1 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.sidebar .subtitle {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+.nav-item {
+  display: block;
+  padding: 12px 16px;
+  margin-bottom: 4px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-mono);
+}
+.nav-item:hover, .nav-item.active {
+  background: rgba(212,173,87,0.1);
+  color: var(--gold);
+}
+.spacer { flex: 1; }
+.logout-btn {
+  color: var(--danger);
+  opacity: 0.7;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  font-size: 0.8rem;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+}
+.logout-btn:hover { opacity: 1; border-color: var(--danger); }
+
+.main {
+  margin-left: 240px;
+  padding: 48px 56px 96px;
+}
+.main h2 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--warm);
+  margin-bottom: 40px;
+}
+
+/* Forms */
+.form-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-bottom: 32px;
+}
+.form-section h3 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+.field {
+  margin-bottom: 20px;
+}
+.field label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.field input, .field textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--warm);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  resize: vertical;
+}
+.field textarea { min-height: 100px; }
+.field input:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.btn {
+  padding: 10px 24px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.85; }
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--warm);
+  margin-right: 8px;
+}
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* List items */
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.item-row:hover { background: rgba(255,255,255,0.02); }
+.item-row:last-child { border-bottom: none; }
+.item-row .drag-handle {
+  cursor: grab;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+.item-row input, .item-row textarea {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--warm);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.item-row textarea { min-height: 40px; resize: none; }
+.item-number { color: var(--gold); opacity: 0.5; font-size: 0.8rem; min-width: 30px; }
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--success);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+.panel { display: none; }
+.panel.active { display: block; }
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h1>Z.S Admin</h1>
+  <div class="subtitle">Portfolio Manager</div>
+  <button class="nav-item active" data-panel="site">Site Content</button>
+  <button class="nav-item" data-panel="expertise">Expertise</button>
+  <button class="nav-item" data-panel="projects">Projects</button>
+  <div class="spacer"></div>
+  <form method="post" action="/api/auth/logout">
+    <button type="submit" class="logout-btn">Sign Out</button>
+  </form>
+</div>
+
+<div class="main">
+
+  <!-- Site Content Panel -->
+  <div id="panel-site" class="panel active">
+    <h2>Site Content</h2>
+    <div class="form-section" id="site-form"></div>
+  </div>
+
+  <!-- Expertise Panel -->
+  <div id="panel-expertise" class="panel">
+    <h2>Expertise</h2>
+    <div class="form-section" id="expertise-list"></div>
+    <button class="btn" onclick="addExpertise()">+ Add Expertise</button>
+  </div>
+
+  <!-- Projects Panel -->
+  <div id="panel-projects" class="panel">
+    <h2>Projects</h2>
+    <div class="form-section" id="projects-list"></div>
+    <button class="btn" onclick="addProject()">+ Add Project</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+// ─────── Navigation ───────
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+  });
+});
+
+function toast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? '#c0392b' : '#27ae60';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function apiFetch(url, options) {
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      let errMsg = 'Request failed';
+      try { const err = await res.json(); errMsg = err.error || errMsg; } catch(e) {}
+      throw new Error(errMsg);
+    }
+    return res;
+  } catch (err) {
+    toast(err.message || 'Network error', true);
+    throw err;
+  }
+}
+
+// ─────── Site Content ───────
+async function loadSiteContent() {
+  let data;
+  try {
+    const res = await apiFetch('/api/admin/site-content');
+    data = await res.json();
+  } catch(e) { return; }
+  document.getElementById('site-form').innerHTML = `
+    <div class="field"><label>Hero Title</label><input id="sc-heroTitle" value="${esc(data.heroTitle)}" /></div>
+    <div class="field"><label>Hero Subtitle</label><input id="sc-heroSubtitle" value="${esc(data.heroSubtitle)}" /></div>
+    <div class="field"><label>About Text</label><textarea id="sc-aboutText">${esc(data.aboutText)}</textarea></div>
+    <div class="field"><label>About Image URL</label><input id="sc-aboutImageUrl" value="${esc(data.aboutImageUrl)}" /></div>
+    <div class="field"><label>Contact Email</label><input id="sc-contactEmail" value="${esc(data.contactEmail)}" /></div>
+    <div class="field"><label>Contact Subtitle</label><input id="sc-contactSubtitle" value="${esc(data.contactSubtitle)}" /></div>
+    <button class="btn" onclick="saveSiteContent()">Save Changes</button>
+  `;
+}
+
+async function saveSiteContent() {
+  const body = {
+    id: 1,
+    heroTitle: document.getElementById('sc-heroTitle').value,
+    heroSubtitle: document.getElementById('sc-heroSubtitle').value,
+    aboutText: document.getElementById('sc-aboutText').value,
+    aboutImageUrl: document.getElementById('sc-aboutImageUrl').value,
+    contactEmail: document.getElementById('sc-contactEmail').value,
+    contactSubtitle: document.getElementById('sc-contactSubtitle').value,
+  };
+  try {
+    await apiFetch('/api/admin/site-content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    toast('Site content saved');
+  } catch(e) {}
+}
+
+// ─────── Expertise ───────
+async function loadExpertise() {
+  let items;
+  try {
+    const res = await apiFetch('/api/admin/expertise');
+    items = await res.json();
+  } catch(e) { return; }
+  const container = document.getElementById('expertise-list');
+  container.innerHTML = items.map(item => `
+    <div class="item-row">
+      <span class="item-number">${esc(item.number)}</span>
+      <input value="${esc(item.number)}" style="max-width:50px" data-id="${item.id}" data-field="number" onchange="saveExpertise(${item.id})" />
+      <input value="${esc(item.title)}" data-id="${item.id}" data-field="title" onchange="saveExpertise(${item.id})" />
+      <input value="${esc(item.description)}" data-id="${item.id}" data-field="description" onchange="saveExpertise(${item.id})" />
+      <button class="btn btn-danger" onclick="deleteExpertise(${item.id})" style="padding:6px 12px;font-size:0.7rem;">Del</button>
+    </div>
+  `).join('');
+}
+
+async function saveExpertise(id) {
+  const row = document.querySelectorAll(`[data-id="${id}"]`);
+  const data = {};
+  row.forEach(el => { data[el.dataset.field] = el.value; });
+  data.id = id;
+  await fetch(`/api/admin/expertise/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  toast('Expertise updated');
+}
+
+async function addExpertise() {
+  try {
+    await apiFetch('/api/admin/expertise', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ number: '00', title: 'New Skill', description: 'Description' })
+    });
+    loadExpertise();
+    toast('Expertise added');
+  } catch(e) {}
+}
+
+async function deleteExpertise(id) {
+  if (!confirm('Delete this expertise?')) return;
+  await fetch(`/api/admin/expertise/${id}`, { method: 'DELETE' });
+  loadExpertise();
+  toast('Expertise deleted');
+}
+
+// ─────── Projects ───────
+async function loadProjects() {
+  let items;
+  try {
+    const res = await apiFetch('/api/admin/projects');
+    items = await res.json();
+  } catch(e) { return; }
+  const container = document.getElementById('projects-list');
+  container.innerHTML = items.map(item => `
+    <div class="item-row" style="flex-wrap:wrap">
+      <input value="${esc(item.title)}" data-id="${item.id}" data-field="title" onchange="saveProject(${item.id})" style="flex:2" />
+      <input value="${esc(item.category)}" data-id="${item.id}" data-field="category" onchange="saveProject(${item.id})" style="flex:1" />
+      <input value="${esc(item.imageUrl)}" data-id="${item.id}" data-field="imageUrl" onchange="saveProject(${item.id})" style="flex:2" placeholder="Image URL" />
+      <input value="${esc(item.imageAlt)}" data-id="${item.id}" data-field="imageAlt" onchange="saveProject(${item.id})" style="flex:1" placeholder="Alt text" />
+      <button class="btn btn-danger" onclick="deleteProject(${item.id})" style="padding:6px 12px;font-size:0.7rem;">Del</button>
+    </div>
+  `).join('');
+}
+
+async function saveProject(id) {
+  const row = document.querySelectorAll(`[data-id="${id}"]`);
+  const data = {};
+  row.forEach(el => { data[el.dataset.field] = el.value; });
+  data.id = id;
+  await fetch(`/api/admin/projects/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  toast('Project updated');
+}
+
+async function addProject() {
+  try {
+    await apiFetch('/api/admin/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: 'New Project', category: 'Category', imageUrl: '', imageAlt: 'New Project', imageBase64: '' })
+    });
+    loadProjects();
+    toast('Project added');
+  } catch(e) {}
+}
+
+async function deleteProject(id) {
+  if (!confirm('Delete this project?')) return;
+  await fetch(`/api/admin/projects/${id}`, { method: 'DELETE' });
+  loadProjects();
+  toast('Project deleted');
+}
+
+function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Init
+loadSiteContent();
+loadExpertise();
+loadProjects();
+</script>
+</body>
+</html>

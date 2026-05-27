@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Z.S Admin</title>
+<style>
+:root {
+  --warm: #e8e2d4;
+  --gold: #d4ad57;
+  --bg: #0b0b0a;
+  --card: #131312;
+  --border: #2a2a25;
+  --muted: #6b6b60;
+  --radius: 6px;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--warm);
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  width: 100%;
+  max-width: 400px;
+}
+.login-card h1 {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.login-card p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 32px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--warm);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+}
+.form-group input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+.btn:hover { opacity: 0.85; }
+.error {
+  background: rgba(220,80,60,0.15);
+  color: #e07060;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<div class="login-card">
+  <h1>Z.S Admin</h1>
+  <p>Sign in to manage your portfolio</p>
+  <div id="error" class="error" style="display:none"></div>
+  <form method="post" action="/api/auth/login">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autofocus />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+    <button type="submit" class="btn">Sign In</button>
+  </form>
+</div>
+<script>
+const errCode = new URLSearchParams(window.location.search).get('error');
+const errMsg = {
+  '1': 'User not found',
+  '2': 'Wrong password',
+  '3': 'Please enter both username and password',
+  '4': 'Server error, please try again later'
+};
+if (errCode && errMsg[errCode]) {
+  const el = document.getElementById('error');
+  el.textContent = errMsg[errCode];
+  el.style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+## .NET
+**/bin/
+**/obj/
+**/publish/
+*.user
+*.suo
+*.db
+*.db-shm
+*.db-wal
+*.log
