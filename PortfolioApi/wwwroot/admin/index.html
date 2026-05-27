@@ -217,59 +217,63 @@ body {
 </head>
 <body>
 <div class="sidebar">
-  <h1>Z.S Admin</h1>
-  <div class="subtitle">Portfolio Manager</div>
-  <button class="nav-item active" data-panel="site">Site Content</button>
-  <button class="nav-item" data-panel="expertise">Expertise</button>
-  <button class="nav-item" data-panel="projects">Projects</button>
-  <button class="nav-item" data-panel="backup">Backup</button>
+  <h1>Z.S 管理后台</h1>
+  <div class="subtitle">作品集管理</div>
+  <button class="nav-item active" data-panel="site">网站内容</button>
+  <button class="nav-item" data-panel="expertise">专业技能</button>
+  <button class="nav-item" data-panel="projects">项目作品</button>
+  <button class="nav-item" data-panel="backup">数据备份</button>
   <div class="spacer"></div>
   <form method="post" action="/api/auth/logout">
-    <button type="submit" class="logout-btn">Sign Out</button>
+    <button type="submit" class="logout-btn">退出登录</button>
   </form>
 </div>
 
 <div class="main">
 
-  <!-- Site Content Panel -->
+  <!-- 网站内容 Panel -->
   <div id="panel-site" class="panel active">
-    <h2>Site Content</h2>
+    <h2>网站内容</h2>
     <div class="form-section" id="site-form"></div>
   </div>
 
-  <!-- Expertise Panel -->
+  <!-- 专业技能 Panel -->
   <div id="panel-expertise" class="panel">
-    <h2>Expertise</h2>
+    <h2>专业技能</h2>
     <div class="form-section" id="expertise-list"></div>
-    <button class="btn" onclick="addExpertise()">+ Add Expertise</button>
+    <button class="btn" onclick="add专业技能()">+ Add 专业技能</button>
   </div>
 
-  <!-- Projects Panel -->
+  <!-- 项目作品 Panel -->
   <div id="panel-projects" class="panel">
-    <h2>Projects</h2>
+    <h2>项目作品</h2>
     <div class="form-section" id="projects-list"></div>
-    <button class="btn" onclick="addProject()">+ Add Project</button>
+    <button class="btn" onclick="addProject()">+ + 添加项目</button>
   </div>
+
+
 
 </div>
 
-<div class="toast" id="toast">Saved</div>
+<div class="toast" id="toast">已保存</div>
+
+<div <div class="toast" id="toast">已保存</div>
 
 <div id="panel-backup" class="panel">
-  <h2>Backup &amp; Restore</h2>
+  <h2>数据备份与恢复</h2>
   
   <div class="form-section">
-    <h3>Create Backup</h3>
+    <h3>创建备份</h3>
     <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">
-      Export all site content, expertise, and projects as a JSON file.
+      将所有网站内容、专业技能和项目作品导出为 JSON 文件。
     </p>
-    <button class="btn" onclick="createBackup()">Create Backup Now</button>
+    <button class="btn" onclick="create数据备份()">创建备份 Now</button>
   </div>
 
   <div class="form-section">
-    <h3>Available Backups</h3>
+    <h3>历史备份</h3>
     <div id="backup-list">
-      <p style="color:var(--muted);font-size:0.85rem;">Loading backups...</p>
+      <p style="color:var(--muted);font-size:0.85rem;">加载备份列表...</p>
     </div>
   </div>
 </div>
@@ -297,18 +301,18 @@ async function apiFetch(url, options) {
   try {
     const res = await fetch(url, options);
     if (!res.ok) {
-      let errMsg = 'Request failed';
+      let errMsg = '请求失败';
       try { const err = await res.json(); errMsg = err.error || errMsg; } catch(e) {}
       throw new Error(errMsg);
     }
     return res;
   } catch (err) {
-    toast(err.message || 'Network error', true);
+    toast(err.message || '网络错误', true);
     throw err;
   }
 }
 
-// ─────── Site Content ───────
+// ─────── 网站内容 ───────
 async function loadSiteContent() {
   let data;
   try {
@@ -316,13 +320,13 @@ async function loadSiteContent() {
     data = await res.json();
   } catch(e) { return; }
   document.getElementById('site-form').innerHTML = `
-    <div class="field"><label>Hero Title</label><input id="sc-heroTitle" value="${esc(data.heroTitle)}" /></div>
-    <div class="field"><label>Hero Subtitle</label><input id="sc-heroSubtitle" value="${esc(data.heroSubtitle)}" /></div>
-    <div class="field"><label>About Text</label><textarea id="sc-aboutText">${esc(data.aboutText)}</textarea></div>
-    <div class="field"><label>About Image URL</label><input id="sc-aboutImageUrl" value="${esc(data.aboutImageUrl)}" /></div>
-    <div class="field"><label>Contact Email</label><input id="sc-contactEmail" value="${esc(data.contactEmail)}" /></div>
-    <div class="field"><label>Contact Subtitle</label><input id="sc-contactSubtitle" value="${esc(data.contactSubtitle)}" /></div>
-    <button class="btn" onclick="saveSiteContent()">Save Changes</button>
+    <div class="field"><label>主标题</label><input id="sc-heroTitle" value="${esc(data.heroTitle)}" /></div>
+    <div class="field"><label>副标题</label><input id="sc-heroSubtitle" value="${esc(data.heroSubtitle)}" /></div>
+    <div class="field"><label>关于我</label><textarea id="sc-aboutText">${esc(data.aboutText)}</textarea></div>
+    <div class="field"><label>About 图片链接</label><input id="sc-aboutImageUrl" value="${esc(data.aboutImageUrl)}" /></div>
+    <div class="field"><label>联系邮箱</label><input id="sc-contactEmail" value="${esc(data.contactEmail)}" /></div>
+    <div class="field"><label>联系副标题</label><input id="sc-contactSubtitle" value="${esc(data.contactSubtitle)}" /></div>
+    <button class="btn" onclick="saveSiteContent()">保存修改</button>
   `;
 }
 
@@ -342,12 +346,12 @@ async function saveSiteContent() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
-    toast('Site content saved');
+    toast('网站内容已保存');
   } catch(e) {}
 }
 
-// ─────── Expertise ───────
-async function loadExpertise() {
+// ─────── 专业技能 ───────
+async function load专业技能() {
   let items;
   try {
     const res = await apiFetch('/api/admin/expertise');
@@ -357,15 +361,15 @@ async function loadExpertise() {
   container.innerHTML = items.map(item => `
     <div class="item-row">
       <span class="item-number">${esc(item.number)}</span>
-      <input value="${esc(item.number)}" style="max-width:50px" data-id="${item.id}" data-field="number" onchange="saveExpertise(${item.id})" />
-      <input value="${esc(item.title)}" data-id="${item.id}" data-field="title" onchange="saveExpertise(${item.id})" />
-      <input value="${esc(item.description)}" data-id="${item.id}" data-field="description" onchange="saveExpertise(${item.id})" />
-      <button class="btn btn-danger" onclick="deleteExpertise(${item.id})" style="padding:6px 12px;font-size:0.7rem;">Del</button>
+      <input value="${esc(item.number)}" style="max-width:50px" data-id="${item.id}" data-field="number" onchange="save专业技能(${item.id})" />
+      <input value="${esc(item.title)}" data-id="${item.id}" data-field="title" onchange="save专业技能(${item.id})" />
+      <input value="${esc(item.description)}" data-id="${item.id}" data-field="description" onchange="save专业技能(${item.id})" />
+      <button class="btn btn-danger" onclick="delete专业技能(${item.id})" style="padding:6px 12px;font-size:0.7rem;">删除</button>
     </div>
   `).join('');
 }
 
-async function saveExpertise(id) {
+async function save专业技能(id) {
   const row = document.querySelectorAll(`[data-id="${id}"]`);
   const data = {};
   row.forEach(el => { data[el.dataset.field] = el.value; });
@@ -375,30 +379,30 @@ async function saveExpertise(id) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
-  toast('Expertise updated');
+  toast('技能已更新');
 }
 
-async function addExpertise() {
+async function add专业技能() {
   try {
     await apiFetch('/api/admin/expertise', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ number: '00', title: 'New Skill', description: 'Description' })
+      body: JSON.stringify({ number: '00', title: '新技能', description: '描述' })
     });
-    loadExpertise();
-    toast('Expertise added');
+    load专业技能();
+    toast('专业技能 added');
   } catch(e) {}
 }
 
-async function deleteExpertise(id) {
-  if (!confirm('Delete this expertise?')) return;
+async function delete专业技能(id) {
+  if (!confirm('确认删除此技能？')) return;
   await fetch(`/api/admin/expertise/${id}`, { method: 'DELETE' });
-  loadExpertise();
-  toast('Expertise deleted');
+  load专业技能();
+  toast('专业技能 deleted');
 }
 
-// ─────── Projects ───────
-async function loadProjects() {
+// ─────── 项目作品 ───────
+async function load项目作品() {
   let items;
   try {
     const res = await apiFetch('/api/admin/projects');
@@ -409,9 +413,9 @@ async function loadProjects() {
     <div class="item-row" style="flex-wrap:wrap">
       <input value="${esc(item.title)}" data-id="${item.id}" data-field="title" onchange="saveProject(${item.id})" style="flex:2" />
       <input value="${esc(item.category)}" data-id="${item.id}" data-field="category" onchange="saveProject(${item.id})" style="flex:1" />
-      <input value="${esc(item.imageUrl)}" data-id="${item.id}" data-field="imageUrl" onchange="saveProject(${item.id})" style="flex:2" placeholder="Image URL" />
-      <input value="${esc(item.imageAlt)}" data-id="${item.id}" data-field="imageAlt" onchange="saveProject(${item.id})" style="flex:1" placeholder="Alt text" />
-      <button class="btn btn-danger" onclick="deleteProject(${item.id})" style="padding:6px 12px;font-size:0.7rem;">Del</button>
+      <input value="${esc(item.imageUrl)}" data-id="${item.id}" data-field="imageUrl" onchange="saveProject(${item.id})" style="flex:2" placeholder="图片链接" />
+      <input value="${esc(item.imageAlt)}" data-id="${item.id}" data-field="imageAlt" onchange="saveProject(${item.id})" style="flex:1" placeholder="图片描述" />
+      <button class="btn btn-danger" onclick="deleteProject(${item.id})" style="padding:6px 12px;font-size:0.7rem;">删除</button>
     </div>
   `).join('');
 }
@@ -426,7 +430,7 @@ async function saveProject(id) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
-  toast('Project updated');
+  toast('项目已更新');
 }
 
 async function addProject() {
@@ -434,40 +438,40 @@ async function addProject() {
     await apiFetch('/api/admin/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: 'New Project', category: 'Category', imageUrl: '', imageAlt: 'New Project', imageBase64: '' })
+      body: JSON.stringify({ title: '新项目', category: '分类', imageUrl: '', imageAlt: '新项目', imageBase64: '' })
     });
-    loadProjects();
-    toast('Project added');
+    load项目作品();
+    toast('项目已添加');
   } catch(e) {}
 }
 
 async function deleteProject(id) {
-  if (!confirm('Delete this project?')) return;
+  if (!confirm('确认删除此项目？')) return;
   await fetch(`/api/admin/projects/${id}`, { method: 'DELETE' });
-  loadProjects();
-  toast('Project deleted');
+  load项目作品();
+  toast('项目已删除');
 }
 
 function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 
-// ─────── Backup ───────
-async function createBackup() {
+// ─────── 数据备份 ───────
+async function create数据备份() {
   try {
     const res = await apiFetch('/api/admin/backup', { method: 'POST' });
     const data = await res.json();
-    toast('Backup created: ' + data.fileName);
-    loadBackups();
+    toast('备份已创建: ' + data.fileName);
+    load数据备份s();
   } catch(e) {}
 }
 
-async function loadBackups() {
+async function load数据备份s() {
   try {
     const res = await apiFetch('/api/admin/backup/list');
     const items = await res.json();
     const container = document.getElementById('backup-list');
     if (items.length === 0) {
-      container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">No backups yet.</p>';
+      container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">暂无备份</p>';
       return;
     }
     container.innerHTML = items.map(item => `
@@ -475,31 +479,31 @@ async function loadBackups() {
         <span style="flex:2;font-size:0.8rem;color:var(--warm);">${esc(item.name)}</span>
         <span style="flex:1;font-size:0.75rem;color:var(--muted);">${(item.size / 1024).toFixed(1)} KB</span>
         <span style="flex:1.5;font-size:0.75rem;color:var(--muted);">${item.createdAt}</span>
-        <a href="/api/admin/backup/download/${encodeURIComponent(item.name)}" class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;text-decoration:none;" download>Download</a>
-        <button class="btn btn-secondary" onclick="restoreBackup('${item.name}')" style="padding:6px 12px;font-size:0.7rem;">Restore</button>
+        <a href="/api/admin/backup/download/${encodeURIComponent(item.name)}" class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;text-decoration:none;" download>下载</a>
+        <button class="btn btn-secondary" onclick="restore数据备份('${item.name}')" style="padding:6px 12px;font-size:0.7rem;">恢复</button>
       </div>
     `).join('');
   } catch(e) {
-    document.getElementById('backup-list').innerHTML = '<p style="color:var(--danger);font-size:0.85rem;">Failed to load backups</p>';
+    document.getElementById('backup-list').innerHTML = '<p style="color:var(--danger);font-size:0.85rem;">加载备份失败</p>';
   }
 }
 
-async function restoreBackup(name) {
-  if (!confirm('Restore from "' + name + '"? This will overwrite all current data.')) return;
+async function restore数据备份(name) {
+  if (!confirm('恢复 from "' + name + '"? 恢复备份？这将覆盖当前所有数据。')) return;
   try {
     await apiFetch('/api/admin/backup/restore/' + encodeURIComponent(name), { method: 'POST' });
-    toast('Backup restored successfully! Refreshing data...');
+    toast('备份恢复成功! 正在刷新数据...');
     loadSiteContent();
-    loadExpertise();
-    loadProjects();
-    loadBackups();
+    load专业技能();
+    load项目作品();
+    load数据备份s();
   } catch(e) {}
 }
 
 // Init
 loadSiteContent();
-loadExpertise();
-loadProjects();
+load专业技能();
+load项目作品();
 </script>
 </body>
 </html>
