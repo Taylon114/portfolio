@@ -470,15 +470,15 @@ async function loadBackups() {
       container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">No backups yet.</p>';
       return;
     }
-    container.innerHTML = items.map(item => 
+    container.innerHTML = items.map(item => `
       <div class="item-row">
-        <span style="flex:2;font-size:0.8rem;color:var(--warm);"></span>
-        <span style="flex:1;font-size:0.75rem;color:var(--muted);"> KB</span>
-        <span style="flex:1.5;font-size:0.75rem;color:var(--muted);"></span>
-        <a href="/api/admin/backup/download/" class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;text-decoration:none;" download>Download</a>
-        <button class="btn btn-secondary" onclick="restoreBackup('')" style="padding:6px 12px;font-size:0.7rem;">Restore</button>
+        <span style="flex:2;font-size:0.8rem;color:var(--warm);">${esc(item.name)}</span>
+        <span style="flex:1;font-size:0.75rem;color:var(--muted);">${(item.size / 1024).toFixed(1)} KB</span>
+        <span style="flex:1.5;font-size:0.75rem;color:var(--muted);">${item.createdAt}</span>
+        <a href="/api/admin/backup/download/${encodeURIComponent(item.name)}" class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;text-decoration:none;" download>Download</a>
+        <button class="btn btn-secondary" onclick="restoreBackup('${item.name}')" style="padding:6px 12px;font-size:0.7rem;">Restore</button>
       </div>
-    ).join('');
+    `).join('');
   } catch(e) {
     document.getElementById('backup-list').innerHTML = '<p style="color:var(--danger);font-size:0.85rem;">Failed to load backups</p>';
   }
