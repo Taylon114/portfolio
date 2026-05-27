@@ -390,7 +390,7 @@ async function add专业技能() {
       body: JSON.stringify({ number: '00', title: '新技能', description: '描述' })
     });
     load专业技能();
-    toast('专业技能 added');
+    toast('技能已添加');
   } catch(e) {}
 }
 
@@ -398,7 +398,7 @@ async function delete专业技能(id) {
   if (!confirm('确认删除此技能？')) return;
   await fetch(`/api/admin/expertise/${id}`, { method: 'DELETE' });
   load专业技能();
-  toast('专业技能 deleted');
+  toast('技能已删除');
 }
 
 // ─────── 项目作品 ───────
@@ -460,7 +460,7 @@ async function create数据备份() {
   try {
     const res = await apiFetch('/api/admin/backup', { method: 'POST' });
     const data = await res.json();
-    toast('备份已创建: ' + data.fileName);
+    toast('备份已创建：' + data.fileName);
     load数据备份s();
   } catch(e) {}
 }
